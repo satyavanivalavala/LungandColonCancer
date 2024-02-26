@@ -12,8 +12,8 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
-async def dynamic_file():
-    return "Hello World"
+async def dynamic_file(request: Request):
+    return templates.TemplateResponse("report.html", {"request": request})
 
 @app.post("/report")
 async def report(request: Request, file: UploadFile = File(...)):
