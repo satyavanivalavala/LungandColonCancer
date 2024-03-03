@@ -13,7 +13,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 async def dynamic_file(request: Request):
-    return templates.TemplateResponse("base.html", {"request": request})
+    return templates.TemplateResponse("report.html", {"request": request})
 
 @app.post("/report")
 async def report(request: Request, file: UploadFile = File(...)):
@@ -40,4 +40,4 @@ async def report(request: Request, file: UploadFile = File(...)):
         "img": img_base64,
         "prediction": class_name
     }
-    return templates.TemplateResponse("base.html", {"request": request,  "img": img_base64, "result":class_name })
+    return templates.TemplateResponse("report.html", {"request": request,  "img": img_base64, "result":class_name })
