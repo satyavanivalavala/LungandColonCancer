@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import base64
 import io
 import cv2
@@ -8,12 +9,13 @@ import numpy as np
 from PIL import Image
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 async def dynamic_file(request: Request):
-    return templates.TemplateResponse("report.html", {"request": request})
+    return templates.TemplateResponse("base.html", {"request": request})
 
 @app.post("/report")
 async def report(request: Request, file: UploadFile = File(...)):
@@ -25,7 +27,7 @@ async def report(request: Request, file: UploadFile = File(...)):
 
     img_resized = cv2.resize(img, (28, 28))
     
-    model = tf.keras.models.load_model("/workspace/Skin_disease_detection/best_model.h5")
+    model = tf.keras.models.load_model("./best_model.h5")
     result = model.predict(img_resized.reshape(1, 28, 28, 3))
 
     max_prob = max(result[0])
@@ -40,4 +42,4 @@ async def report(request: Request, file: UploadFile = File(...)):
         "img": img_base64,
         "prediction": class_name
     }
-    return templates.TemplateResponse("report.html", {"request": request,  "img": img_base64, "result":class_name })
+    return templates.TemplateResponse("base.html", {"request": request,  "img": img_base64, "result":class_name })
