@@ -48,7 +48,7 @@
               <option value="123456781188">Daniel - 123456781188 </option>
               <option value="123456781448">Vin - 123456781448 </option>
               <option value="345678901666">Alexis - 345678901666 </option>
-        
+
             </select>
 
           </div>
@@ -115,7 +115,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="card5">
-                <div class="card-body8" style="background-color:{% if result1 >50 %}
+                  <div class="card-body8" style="background-color:{% if result1 >50 %}
                         #f55d6c;color: white
                       {% elif result1 <20 %}
                       #85ed79;
@@ -123,9 +123,9 @@
                       #f9fc90;
                       {% endif %}
                     ">
-                  <b>Pneumonia :</b> {{result1}} %
+                    <b>Patient is suffering from:</b> {{result}} %
+                  </div>
                 </div>
-              </div>
                 <!-- <div class="card5" >
                   <div class="sc-gauge" >
                     <div class="sc-background">

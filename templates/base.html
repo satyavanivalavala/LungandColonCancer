@@ -164,6 +164,24 @@
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
   }
+
+  .chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #016064;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
 </style>
 
 <body>
@@ -309,7 +327,9 @@
         </div>
       </div>
     </div>
-
+    <div class="chat-icon">
+      <i class="fas fa-comment"></i> 
+    </div>
   </section>
 
   <!-- <section id="team-section" class="mt-5">

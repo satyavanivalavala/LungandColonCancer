@@ -13,13 +13,24 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+
 @app.get("/")
 async def dynamic_file(request: Request):
     return templates.TemplateResponse("base.html", {"request": request})
 
-@app.post("/report")
+@app.get("/PatientForm")
+async def Patient_form(request: Request):
+    return templates.TemplateResponse("PatientForm.html", {"request": request})
+
+@app.get("/report")
+async def report_fun(request: Request):
+    return templates.TemplateResponse("report.html", {"request": request})
+
+
+@app.post("/upload")
 async def report(request: Request, file: UploadFile = File(...)):
     data = await file.read()
+
     # Convert the bytes data to a NumPy array
     nparr = np.frombuffer(data, np.uint8)
     # Decode the image using cv2.imdecode
@@ -42,4 +53,4 @@ async def report(request: Request, file: UploadFile = File(...)):
         "img": img_base64,
         "prediction": class_name
     }
-    return templates.TemplateResponse("base.html", {"request": request,  "img": img_base64, "result":class_name })
+    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": img_base64, "result":class_name })
