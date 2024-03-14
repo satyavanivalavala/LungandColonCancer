@@ -57,7 +57,7 @@ async def report(request: Request, file: UploadFile = File(...)):
         "img": img_base64,
         "prediction": class_name
     }
-    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": img, "result":class_name })
+    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": img_base64, "result":class_name })
 
 @app.get("/chat", response_class=HTMLResponse)
 def read_root(request: Request):
