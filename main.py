@@ -63,24 +63,23 @@ async def report(request: Request, file: UploadFile = File(...)):
 def read_root(request: Request):
     return templates.TemplateResponse("chat.html", {"request": request})
 
-@app.post("/get_gemini_completion", response_class=HTMLResponse)
-async def get_gemini_completion(
-    request: Request,
-    gemini_api_key: str = Form(...),
-    prompt: str = Form(...),
-):
+@app.post("/get_gemini_completion")
+def get_gemini_completion(
+                            gemini_api_key: str =Form(...),
+                            prompt: str = Form(...),  
+                        ):
     try:
-        genai.configure(api_key=gemini_api_key)
+        genai.configure(api_key = gemini_api_key)
         model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(
-            prompt,
-            generation_config=genai.types.GenerationConfig(
-                candidate_count=1,
-                stop_sequences=['space'],
-                max_output_tokens=400,
-                temperature=0)
-        )
-        print(response.text)
-        return templates.TemplateResponse("chat.html", {"request": request, "response": response.text})
+        response = model.generate_content(prompt)
+        # response = model.generate_content(
+        #     prompt, safety_settings={'HARASSMENT':'block_none'},
+        #     generation_config=genai.types.GenerationConfig(
+        #         candidate_count=1,
+        #         stop_sequences=['space'],
+        #         max_output_tokens=400,
+        #         temperature=0)
+        # )
+        return {"response": response.text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
