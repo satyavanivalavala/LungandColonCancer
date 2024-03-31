@@ -33,7 +33,7 @@ async def report_fun(request: Request):
 
 
 @app.post("/upload")
-async def report(request: Request, file: UploadFile = File(...)):
+async def report(request: Request, file: UploadFile = File(...),patientName: str = Form(...) ,dob: str = Form(...), gender: str=Form(...), email: str=Form(...)):
     s_img = await file.read()
     # Convert the bytes data to a NumPy array
     image = Image.open(io.BytesIO(s_img))
@@ -49,12 +49,13 @@ async def report(request: Request, file: UploadFile = File(...)):
     max_prob = np.max(predictions)
     class_ind = np.argmax(predictions)
     class_name = classes[class_ind]
-    img_base64 = base64.b64encode(s_img).decode('utf-8')
+
     result = {
-        "img": img_base64, 
+        "img": s_img,
         "prediction": class_name
+        
     }
-    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": img_base64, "result":class_name })
+    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": s_img, "result":class_name, "patientName": patientName,"dob":dob, "gender":gender, "email":email})
 
 
 @app.get("/chat", response_class=HTMLResponse)
