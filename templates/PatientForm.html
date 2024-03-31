@@ -64,9 +64,9 @@
             <div class="mb-3">
               <label for="gender" class="form-label">Gender</label>
               <select class="form-select" id="gender" name="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div class="mb-3">
@@ -81,32 +81,38 @@
           </form>
         </div>
       </div>
-      <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-          <div id="resultBox">
-            <h2 style="color: rgba(0, 0, 0, 0.776);">Result</h2>
-            <div id="imageResult">
-              <h4>Patient Name: {{ patientName }}</h4>
-              <h4>Patient DOB: {{ dob }}</h4>
-              <h4>Gender: {{ gender }}</h4>
-              <h4>Email: {{email}}
-              </h4>
-              {% if img %}
-              <h4>Rendered Image</h4>
-              <div id="imageContainer">
-                <img id="renderedImage" src="data:image/jpeg;base64,{{ img }}" />
-              </div>
-
+      <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-13">
+                <div id="resultBox">
+                    <h2 style="color: rgba(0, 0, 0, 0.776); text-align: center; font-weight: bold; margin-bottom: 40px;">Result</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% if img %}
+                            <h4><span style="font-weight: bold;">Uploaded Image:</span></h4>
+                            <div id="imageContainer">
+                                <img id="renderedImage" src="data:image/jpeg;base64,{{ img }}" style="width: 300px; height: 250px;" />
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <div id="imageResult">
+                                <h4 style="margin-top: 30px;"><span style="font-weight: bold;">Patient Name:</span> {{ patientName }}</h4>
+                                <h4><span style="font-weight: bold;">Patient DOB:</span> {{ dob }}</h4>
+                                <h4><span style="font-weight: bold;">Gender:</span> {{ gender }}</h4>
+                                <h4><span style="font-weight: bold;">Email:</span> {{email}}</h4>
+                                <h4><span style="font-weight: bold;">Prediction:</span> {{ result }}</h4>
+                                <h4><span style="font-weight: bold;">Model Used:</span> Standard CNN</h4>
+                                <h4><span style="font-weight: bold;">Accuracy:</span> 98.6%</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="predictionResult">
-              <h4>Patient is suffering from:</h4>
-              <h5>{{ result }}</h5>
-              {% endif %}
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+    
     </div>
   {% endblock %}
 </body>
-</html>
+</html> 
