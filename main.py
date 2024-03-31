@@ -31,33 +31,31 @@ async def report_fun(request: Request):
     return templates.TemplateResponse("report.html", {"request": request})
 
 
+
 @app.post("/upload")
 async def report(request: Request, file: UploadFile = File(...)):
-    data = await file.read()
-
+    s_img = await file.read()
     # Convert the bytes data to a NumPy array
-    nparr = np.frombuffer(data, np.uint8)
-    # Decode the image using cv2.imdecode
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    image = Image.open(io.BytesIO(s_img))
 
-    img_resized = cv2.resize(img, (28, 28))
-    
-    model = tf.keras.models.load_model("./best_model.h5")
-    result = model.predict(img_resized.reshape(1, 28, 28, 3))
-
-    max_prob = max(result[0])
-    classes = {4: ('nv', ' melanocytic nevi'), 6: ('mel', 'melanoma'), 2 :('bkl', 'benign keratosis-like lesions'), 1:('bcc' , ' basal cell carcinoma'), 5: ('vasc', ' pyogenic granulomas and hemorrhage'), 0: ('akiec', 'Actinic keratoses and intraepithelial carcinomae'),  3: ('df', 'dermatofibroma')}
-
-    class_ind = list(result[0]).index(max_prob)
+    # Preprocess the image
+    img = image.resize((224, 224))
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array = tf.expand_dims(img_array, 0)
+    loaded_model = tf.keras.models.load_model('Lung.h5', compile=False)
+    classes = {0: ('ca', 'colon adenocarcinoma'), 1: ('cb', 'colon benign'), 2: ('lac', 'lung adenocarcinoma'), 3: ('lb', 'lung benign'),
+            4: ('lscc', 'lung squamous cell carcinoma'), 5: ('nc', 'Free from Cancer')}
+    predictions = loaded_model.predict(img_array)
+    max_prob = np.max(predictions)
+    class_ind = np.argmax(predictions)
     class_name = classes[class_ind]
-    print(class_name)
-    _, img_encoded = cv2.imencode('.png', img_resized)
-    img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+
     result = {
-        "img": img_base64,
+        "img": s_img,
         "prediction": class_name
     }
-    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": img_base64, "result":class_name })
+    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": s_img, "result":class_name })
+
 
 @app.get("/chat", response_class=HTMLResponse)
 def read_root(request: Request):
@@ -72,14 +70,6 @@ def get_gemini_completion(
         genai.configure(api_key = gemini_api_key)
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(prompt)
-        # response = model.generate_content(
-        #     prompt, safety_settings={'HARASSMENT':'block_none'},
-        #     generation_config=genai.types.GenerationConfig(
-        #         candidate_count=1,
-        #         stop_sequences=['space'],
-        #         max_output_tokens=400,
-        #         temperature=0)
-        # )
         return {"response": response.text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
