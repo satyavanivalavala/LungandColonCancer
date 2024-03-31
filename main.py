@@ -50,12 +50,13 @@ async def report(request: Request, file: UploadFile = File(...),patientName: str
     class_ind = np.argmax(predictions)
     class_name = classes[class_ind]
 
+    img_base64 = base64.b64encode(s_img).decode('utf-8')
     result = {
-        "img": s_img,
+        "img": img_base64,
         "prediction": class_name
         
     }
-    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": s_img, "result":class_name, "patientName": patientName,"dob":dob, "gender":gender, "email":email})
+    return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": img_base64, "result":class_name, "patientName": patientName,"dob":dob, "gender":gender, "email":email})
 
 
 @app.get("/chat", response_class=HTMLResponse)
