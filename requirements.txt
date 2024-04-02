@@ -12,3 +12,6 @@ opencv-python
 tensorflow
 Pillow
 google-generativeai
+torch
+torchvision
+matplotlib
