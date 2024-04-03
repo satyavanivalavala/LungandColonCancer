@@ -85,37 +85,72 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-11">
                 <div id="resultBox">
-                    <h2 style="color: rgba(0, 0, 0, 0.776); text-align: center; font-weight: bold; margin-bottom: 20px;">Result</h2>
+                    <h2 style="color: rgba(0, 0, 0, 0.776); text-align: center; font-weight: bold; margin-bottom: 20px;">Report</h2>
                     <div class="row">
                         <div class="col-md-6">
                             {% if img %}
                             <h4><span style="font-weight: bold;">Uploaded Image:</span></h4>
+
                             <div id="imageContainer">
                                 <img id="renderedImage" src="data:image/jpeg;base64,{{ img }}" style="width: 300px; height: 250px;" />
                             </div>
                             {% endif %}
                         </div>
                         <div class="col-md-6">
-                            <div id="imageResult">
-                                <h4 style="margin-top: 30px;"><span style="font-weight: bold;">Patient Name:</span> {{ patientName }}</h4>
-                                <h4><span style="font-weight: bold;">Patient DOB:</span> {{ dob }}</h4>
-                                <h4><span style="font-weight: bold;">Gender:</span> {{ gender }}</h4>
-                                <h4><span style="font-weight: bold;">Email:</span> {{email}}</h4>
-                                <h4><span style="font-weight: bold;">Model Used:</span> Standard CNN</h4>
-                                <h4><span style="font-weight: bold;">Prediction:</span> {{ result }}</h4>
-                                <h4><span style="font-weight: bold;">Accuracy:</span> 98.6%</h4>
-                                <h4><span style="font-weight: bold;">Model Used:</span> EfficientNet B3</h4>
-                                <h4><span style="font-weight: bold;">Prediction:</span> {{ result }}</h4>
-                                <h4><span style="font-weight: bold;">Accuracy:</span> 99%</h4>
+                            <div id="patientInfo">
+                                <h4><span style="font-weight: bold;">Patient Information:</span></h4>
+                                <table class="table table-bordered" style="border-color: black;">
+                                    <tbody>
+                                        <tr>
+                                            <th>Patient Name:</th>
+                                            <td style="border-color: black;">{{ patientName }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date of Birth:</th>
+                                            <td style="border-color: black;">{{ dob }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender:</th>
+                                            <td style="border-color: black;">{{ gender }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email:</th>
+                                            <td style="border-color: black;">{{ email }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="modelInfo">
+                                <h4 style="margin-top: 30px;"><span style="font-weight: bold;">Prediction:</span></h4>
+                                <table class="table table-bordered" style="border-color: black;">
+                                    <thead>
+                                        <tr>
+                                            <th>Model Used</th>
+                                            <th>Prediction</th>
+                                            <th>Accuracy</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td >Standard CNN</td>
+                                            <td>('lac', 'lung adenocarcinoma')</td>
+                                            <td >98.6%</td>
+                                        </tr>
+                                        <tr>
+                                            <td >EfficientNet B3</td>
+                                            <td >('lac', 'lung adenocarcinoma')</td>
+                                            <td >99%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    </div>
+    </div>     
+     
   {% endblock %}
 </body>
 </html> 
