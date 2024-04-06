@@ -23,4 +23,3 @@ EXPOSE 8000
 # Run app.py when the container launches
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 #uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-#AIzaSyAs3DbE2NsZxvscwk81dQEWOmD0vx5XR_E
