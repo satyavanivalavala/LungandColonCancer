@@ -65,12 +65,19 @@ async def report(request: Request, file: UploadFile = File(...),patientName: str
         "prediction": class_name
         
     }
+
+    cur = conn.cursor()
+    cur.execute("INSERT INTO Predictions (patient_name,date_of_birth,gender,email,prediction1,prediction2) VALUES (%s, %s,%s, %s,%s,%s)", (patientName,dob,gender,email,class_name[1],class_name[1]))
+    conn.commit()
+    cur.close()
     return templates.TemplateResponse("PatientForm.html", {"request": request,  "img": img_base64, "result":class_name, "patientName": patientName,"dob":dob, "gender":gender, "email":email})
 
 
 @app.get("/chat", response_class=HTMLResponse)
 def read_root(request: Request):
     return templates.TemplateResponse("chat.html", {"request": request})
+
+
 
 @app.post("/get_gemini_completion")
 def get_gemini_completion(
