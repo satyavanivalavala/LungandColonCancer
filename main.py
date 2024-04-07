@@ -10,7 +10,16 @@ from PIL import Image
 from fastapi import FastAPI, Form, HTTPException
 from fastapi.responses import HTMLResponse
 import google.generativeai as genai
+import psycopg2
 
+
+conn = psycopg2.connect(
+    dbname="sample_db",
+    user="app",
+    password="247E5Zb8p5uQ1Ca89rPxld9k",
+    host="informally-sought-honeybee.a1.pgedge.io",
+    port="5432"
+)
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
