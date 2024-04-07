@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <h1>Existing Results</h1>
+    {% if existing_user %}
+        <p>Patient Name: {{ existing_user[3] }}</p>
+        <p>Date of Birth: {{ existing_user[0] }}</p>
+        <p>Email: {{ existing_user[1] }}</p>
+        <p>Gender: {{ existing_user[2] }}</p>
+        <p>Prediction 1: {{ existing_user[4] }}</p>
+        <p>Prediction 2: {{ existing_user[5] }}</p>
+    {% else %}
+        <p>No results found for the provided information.</p>
+    {% endif %}
+</div>
+{% endblock %}
