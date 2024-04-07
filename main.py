@@ -16,8 +16,8 @@ import psycopg2
 conn = psycopg2.connect(
     dbname="sample_db",
     user="app",
-    password="247E5Zb8p5uQ1Ca89rPxld9k",
-    host="informally-sought-honeybee.a1.pgedge.io",
+    password="",
+    host="",
     port="5432"
 )
 
@@ -35,11 +35,24 @@ async def dynamic_file(request: Request):
 async def Patient_form(request: Request):
     return templates.TemplateResponse("PatientForm.html", {"request": request})
 
+@app.get("/ExistingResults")
+async def ExistingResults(request: Request):
+    return templates.TemplateResponse("ExistingResults.html", {"request": request})
+
 @app.get("/report")
 async def report_fun(request: Request):
     return templates.TemplateResponse("report.html", {"request": request})
 
-
+@app.post("/existingresults")
+async def do_login(
+    request: Request,
+    patientName: str = Form(...) ,dob: str = Form(...),email: str=Form(...)
+):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Predictions WHERE patient_name=%s and date_of_birth=%s and email=%s", (patientName,dob,email))
+    existing_user = cur.fetchone()
+    cur.close()
+    return templates.TemplateResponse("ViewResults.html", {"request": request, "existing_user": existing_user})
 
 @app.post("/upload")
 async def report(request: Request, file: UploadFile = File(...),patientName: str = Form(...) ,dob: str = Form(...), gender: str=Form(...), email: str=Form(...)):
